@@ -1,37 +1,17 @@
 # Candyhouse Routers
+## Build a Custom OpenWRT Firmware for the EA3500
 
-_Candyhouse_ is the codename for the Cisco board that powers the Cisco/Linksys EA4500, E4200v2, and EA3500 WiFi routers.  I have an EA4500 and an E4200v2 that I test these kernels on.  If you happen to have an EA3500 and would be open to testing builds, please [let me know](mailto:randall.will@gmail.com?subject=Candyhouse-Linux).
-
-# Building USB uImages
-
-```bash
-$ make usb
-```
-
-Yup, it really is that simple.  The included [Makefile](Makefile) will fetch the kernel source from [kernel.org](http://kernel.org), extract the source, patch with the included [usb.patch](patches/usb.patch), configure using the included linux.config, run the build, and copy the uImage to your `pwd`.
-
-You can flash the uImage to your router like you would any normal SSA and it will look for a root filesystem on `/dev/sda1` -- e.g. a USB stick.
-
-For more info and discussion about making these kernels work in practice, check out:
-
-[http://www.wolfteck.com/projects/candyhouse/install/](http://www.wolfteck.com/projects/candyhouse/install/)
-
+_Candyhouse_ is the codename for the Cisco board that powers the Cisco/Linksys EA4500, E4200v2, and EA3500 WiFi routers.  This is presently only for the EA3500 router.
 # Building OpenWRT SSAs
 
 ```bash
 $ make openwrt
 ```
 
-The included [Makefile](Makefile) will clone OpenWRT, patch it as appropriate, and build SSAs for the EA4500 / E4200v2 / EA3500.
-
-You can also limit the build to your desired platform:
+The included [Makefile](Makefile) will clone OpenWRT, patch it as appropriate, and build SSAs for the EA3500.  Note: this takes about 8GB of space.
 
 ```bash
 $ make openwrt3500
-```
-
-```bash
-$ make openwrt4500
 ```
 
 For more info and disucssion about OpenWRT on Candyhouse routers, please visit:
@@ -49,12 +29,16 @@ Or switch by disabling the boot counter reset in OpenWRT and doing three normal 
 
 # Building / Installing Modules
 
-No need.  All required functions are built into the kernel image.  No more mounting your router FS to you build box!
-
+The specific purpose of this fork of [https://github.com/cilynx/Candyhouse-Linux/] is to allow you to add modules and programs to the build.  Especially kernel modules are specific to the built kernel version, and so it is not possible to install them from opkg unless you can find them built for your kernel version.  This builds the latest snapshot, so that may not be easy.  It also gives you a way to make .ssa firmware with your custom packages installed already.
 # Cleaning Up
 
 ```bash
 $ make clean
 ```
 
-This will remove all of the status files, the patchlog, the uImage, the downloaded kernel source and its extracted tree.
+This will remove all of the status files, the patchlog, the uImage, the downloaded kernel source and its extracted tree.  It leaves the toolchain, so you don't have to recompile that again.
+
+```bash
+$ make distclean
+```
+This will also remove all the toolchain, and in fact the whole openwrt directory.
