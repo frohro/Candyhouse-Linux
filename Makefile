@@ -4,11 +4,11 @@ LINUX=linux-$(VERSION)
 all::
 	@echo
 	@echo "This Makefile allows you to add and subtract packages from the OpenWRT"
-	@echo "Chaos Calmer build for the EA3500."
+	@echo "Chaos Calmer build for the EA4500."
 	@echo
 	@echo "Options:"
-	@echo "make openwrt3500\tBuilds pri and alt OpenWRT firmware images for EA3500"
-	@echo "make openwrt-kirkwood-ea3500-pri.ssa \tBuilds just the pri OpenWRT firmware image for EA3500"
+	@echo "make openwrt4500\tBuilds pri and alt OpenWRT firmware images for EA4500"
+	@echo "make openwrt-kirkwood-ea4500-pri.ssa \tBuilds just the pri OpenWRT firmware image for EA4500"
 	@echo
 
 .openwrt_fetched:
@@ -18,14 +18,14 @@ all::
 .openwrt_luci: .openwrt_fetched
 	cd openwrt && ./scripts/feeds update packages luci && ./scripts/feeds install -a -p luci
 	cd openwrt && patch -p1 < ../patches/openwrt-config.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-3500-config.patch
+	cd openwrt && patch -p1 < ../patches/openwrt-4500-config.patch
 	cp openwrt/.config .config-before-menuconfig
 	# Save this so if you want to redo the whole thing, without rebuilding the toolchain.
 	cd openwrt && patch -p1 < ../patches/openwrt.patch
-	cd openwrt && patch -p1 < ../patches/openwrt-3500.patch
+	cd openwrt && patch -p1 < ../patches/openwrt-4500.patch
 	touch $@
 
-openwrt-kirkwood-ea3500-pri.ssa: .openwrt_luci
+openwrt-kirkwood-ea4500-pri.ssa: .openwrt_luci
 	cd openwrt && patch -p1 < ../patches/openwrt-pri.patch
 	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
 	cd openwrt && make target/linux/clean
@@ -37,16 +37,16 @@ openwrt-kirkwood-ea3500-pri.ssa: .openwrt_luci
 	# Save the .config so if you want to load it from the menuconfig, so you don't have to 
 	# repeat the changes you made since the last make clean.
 	cd openwrt && make oldconfig && make -j8
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500.ssa openwrt-kirkwood-ea3500-pri.ssa
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-pri.ssa
 	cd openwrt && patch -p1 -R < ../patches/openwrt-pri.patch
 
 
-openwrt3500: openwrt-kirkwood-ea3500-pri.ssa
+openwrt4500: openwrt-kirkwood-ea4500-pri.ssa
 	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
 	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
 	cd openwrt && make target/linux/clean
 	cd openwrt && make oldconfig && make -j8
-	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea3500.ssa openwrt-kirkwood-ea3500-alt.ssa
+	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-alt.ssa
 	cd openwrt && patch -p1 -R < ../patches/openwrt-alt.patch
 
 openwrt-clean::

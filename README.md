@@ -1,17 +1,17 @@
 # Candyhouse Routers
-## Build a Custom OpenWRT Firmware for the EA3500
+## Build a Custom OpenWRT Firmware for the EA4500
 
-_Candyhouse_ is the codename for the Cisco board that powers the Cisco/Linksys EA4500, E4200v2, and EA3500 WiFi routers.  This is presently only for the EA3500 router.
+_Candyhouse_ is the codename for the Cisco board that powers the Cisco/Linksys EA4500, E4200v2, and EA4500 WiFi routers.  This is presently only for the EA4500 router.
 # Building OpenWRT SSAs
 
 ```bash
 $ make openwrt
 ```
 
-The included [Makefile](Makefile) will clone OpenWRT, patch it as appropriate, and build SSAs for the EA3500.  Note: this takes about 8GB of space.
+The included [Makefile](Makefile) will clone OpenWRT, patch it as appropriate, and build SSAs for the EA4500.  Note: this takes about 8GB of space.
 
 ```bash
-$ make openwrt3500
+$ make openwrt4500
 ```
 
 For more info and disucssion about OpenWRT on Candyhouse routers, please visit:
