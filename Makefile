@@ -36,7 +36,7 @@ openwrt-kirkwood-ea4500-pri.ssa: .openwrt_luci
 	cp openwrt/.config .config 
 	# Save the .config so if you want to load it from the menuconfig, so you don't have to 
 	# repeat the changes you made since the last make clean.
-	cd openwrt && make oldconfig && make -j8
+	cd openwrt && make oldconfig && make
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-pri.ssa
 	cd openwrt && patch -p1 -R < ../patches/openwrt-pri.patch
 
@@ -45,7 +45,7 @@ openwrt4500: openwrt-kirkwood-ea4500-pri.ssa
 	cd openwrt && patch -p1 < ../patches/openwrt-alt.patch
 	cd openwrt && chmod 755 target/linux/kirkwood/base-files/etc/init.d/linksys_recovery
 	cd openwrt && make target/linux/clean
-	cd openwrt && make oldconfig && make -j8
+	cd openwrt && make oldconfig && make
 	cp openwrt/bin/kirkwood/openwrt-kirkwood-ea4500.ssa openwrt-kirkwood-ea4500-alt.ssa
 	cd openwrt && patch -p1 -R < ../patches/openwrt-alt.patch
 
